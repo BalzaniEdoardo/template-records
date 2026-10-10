@@ -1,0 +1,19 @@
+name: validate records
+
+# Checks every push and pull request against data/schema.yaml, so a commit made
+# without the local pre-commit hook is still checked.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      # The tool is installed from its own repository. Pin a tag (@v0.2.0) to
+      # control when the dataset picks up a new version of the tool.
+      - name: Check records against the schema
+        run: uvx --from git+https://github.com/BalzaniEdoardo/safedata safedata validate

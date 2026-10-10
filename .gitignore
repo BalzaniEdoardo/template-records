@@ -1,0 +1,7 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Lock files that Excel and LibreOffice create next to open files
+~$*
+.~lock.*#

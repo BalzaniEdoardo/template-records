@@ -1,0 +1,5 @@
+# The records file is sorted and normalized when staged (filter), merged record
+# by record (merge), and shows changed cells with `git diff --word-diff` (diff).
+# The three drivers are configured per clone by `safedata install`, which
+# `safedata edit` also runs on start. Without them git treats the file as plain text.
+data/records.csv  filter=safedata merge=safedata diff=safedata text eol=lf

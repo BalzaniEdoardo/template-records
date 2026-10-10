@@ -1,0 +1,3 @@
+# Marks this folder as a safedata dataset. Paths are relative to this file.
+records = "data/records.csv"
+schema = "data/schema.yaml"
