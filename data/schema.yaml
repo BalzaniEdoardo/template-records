@@ -1,9 +1,15 @@
-# Describes the records table. The tools use it to validate every change,
-# to normalize the CSV, and to build the editing workbook.
+# Describes the records table: its columns and the values each one accepts.
+# safedata checks every change against it.
 #
 # Column types: int, float, date (YYYY-MM-DD), bool (true/false), choice, string.
 
 key: id
+
+# Groups of columns whose values, together, must differ between records: here,
+# one observation of each category per site and day. Records with an empty
+# value in a group are not checked. Use [] to allow duplicates.
+unique_entries:
+  - [date, site, category]
 
 columns:
   - name: id
