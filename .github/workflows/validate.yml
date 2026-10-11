@@ -1,7 +1,8 @@
 name: validate records
 
-# Checks every push and pull request against data/schema.yaml, so a commit made
-# without the local pre-commit hook is still checked.
+# validate: checks every push and pull request against data/schema.yaml, so a
+# commit made without the local pre-commit hook is still checked.
+# setup: checks that the setup steps in the README work on macOS, Linux and Windows.
 
 on:
   push:
@@ -19,3 +20,40 @@ jobs:
       # new version.
       - name: Check records against the schema
         run: uvx --from git+https://github.com/BalzaniEdoardo/safedata safedata validate
+
+  # Follows the setup steps of the README on a clean machine: install the tool
+  # with the one-line installer, check that check-setup reports the missing
+  # setup, run `safedata install`, and check that check-setup then passes.
+  setup:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
+      - name: Set up a clone (macOS, Linux)
+        if: runner.os != 'Windows'
+        run: |
+          curl -LsSf https://raw.githubusercontent.com/BalzaniEdoardo/safedata/main/install.sh | sh
+          export PATH="$HOME/.local/bin:$PATH"
+          if ./check-setup.sh; then echo "check-setup should fail before safedata install"; exit 1; fi
+          safedata install
+          ./check-setup.sh
+          safedata validate
+      - name: Set up a clone (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        # A script's `exit 1` does not stop a pwsh step by itself, so check after each command.
+        run: |
+          powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/BalzaniEdoardo/safedata/main/install.ps1 | iex"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $env:Path = "$env:USERPROFILE\.local\bin;$env:Path"
+          ./check-setup.ps1
+          if ($LASTEXITCODE -eq 0) { Write-Host "check-setup should fail before safedata install"; exit 1 }
+          safedata install
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./check-setup.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          safedata validate
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

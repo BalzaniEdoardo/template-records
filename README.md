@@ -12,18 +12,28 @@ This repository is a template. To start a dataset of your own, make a copy (on G
 | `data/schema.yaml` | the columns and their rules; see [Describing the columns](#describing-the-columns) |
 | `safedata.toml` | marks this folder as a dataset for the `safedata` tool, and says where the two files above are |
 | `.gitattributes` | tells git to use the `safedata` add-ons for `records.csv` |
-| `.github/workflows/validate.yml` | checks every push against the schema |
+| `.github/workflows/validate.yml` | checks every push against the schema, and that the setup steps below work on macOS, Linux and Windows |
 | `docs/EXCEL_SETUP.md` | connecting an Excel workbook for analysis |
+| `check-setup.sh`, `check-setup.ps1` | check that this computer and this copy are set up; see [Setting up a computer](#setting-up-a-computer) |
 
 ## Setting up a computer
 
-Install [git](https://git-scm.com) and [uv](https://docs.astral.sh/uv/), then the `safedata` tool (once per computer):
+There are two steps: installing the `safedata` tool, once per computer, and setting up each copy of the dataset.
 
-```sh
-uv tool install git+https://github.com/BalzaniEdoardo/safedata
-```
+**1. Install the tool** (once per computer). The only requirement is [git](https://git-scm.com); on a new Mac, run `git --version` once in Terminal first, and macOS offers to install it if it is missing. Then:
 
-Then get a copy of the dataset and set up the git add-ons for it (once per copy):
+- macOS and Linux:
+  ```sh
+  curl -LsSf https://raw.githubusercontent.com/BalzaniEdoardo/safedata/main/install.sh | sh
+  ```
+- Windows (PowerShell):
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/BalzaniEdoardo/safedata/main/install.ps1 | iex"
+  ```
+
+The installer also installs [uv](https://docs.astral.sh/uv/) if it is missing, and needs no administrator rights. Open a new terminal afterwards. See the [safedata README](https://github.com/BalzaniEdoardo/safedata) for details.
+
+**2. Set up a copy of the dataset** (once per copy):
 
 ```sh
 git clone <address of this repository> records
@@ -31,7 +41,9 @@ cd records
 safedata install
 ```
 
-`safedata install` configures git in this copy to sort `records.csv` when it is staged, merge it record by record, and check it against the schema before each commit. `safedata edit` runs it automatically, so forgetting it is harmless.
+`safedata install` configures git in this copy to sort `records.csv` when it is staged, merge it record by record, and check it against the schema before each commit. These settings live in the copy's `.git` folder, which git does not copy between clones, so every copy needs this step. `safedata edit` also runs it.
+
+To check that a computer and a copy are set up, run `./check-setup.sh` (macOS, Linux) or `.\check-setup.ps1` (Windows) in the dataset folder. It changes nothing: it says whether the tool is installed and whether this copy is set up, and how to fix what is missing.
 
 ## Editing records
 
