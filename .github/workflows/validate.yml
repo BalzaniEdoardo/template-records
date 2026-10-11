@@ -11,9 +11,11 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
-      # The tool is installed from its own repository. Pin a tag (@v0.2.0) to
-      # control when the dataset picks up a new version of the tool.
+      # Actions are pinned to commit hashes, so a moved tag cannot change what runs.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e  # v6.8.0
+      # The tool is installed from the main branch of its repository. Once the tool
+      # has releases, add @<tag> to the URL to control when the dataset picks up a
+      # new version.
       - name: Check records against the schema
         run: uvx --from git+https://github.com/BalzaniEdoardo/safedata safedata validate
