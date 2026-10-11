@@ -105,19 +105,21 @@ columns:
     description: Measured value, if any.
 ```
 
-`key` names the column that identifies each record. It must be a column of type `int`, so that new records can be numbered automatically. Mark it `required` and `unique`.
+`key` names the column that identifies each record. It must be a column of type `int`, so that new records can be numbered automatically; `safedata` refuses a schema where it is not. Every record must have a key and no two records can share one, even if the schema does not mark the column `required` and `unique`.
 
-Each column can have these settings:
+Each column can have these settings. `name` and `type` are required for every column, and `choices` for every `choice` column:
 
 | Setting | For types | Meaning |
 |---|---|---|
-| `name` | all | column name, exactly as in the first line of `records.csv` |
-| `type` | all | one of the types below; `string` if omitted |
-| `required` | all | `true`: the value cannot be empty |
-| `unique` | all | `true`: no two records can have the same value |
-| `choices` | `choice` | the allowed values; the editor shows them as a dropdown |
+| `name` | all | **required**; column name, exactly as in the first line of `records.csv` |
+| `type` | all | **required**; one of the types below |
+| `required` | all | `true` or `false` (default): whether the value can be empty |
+| `unique` | all | `true` or `false` (default): whether two records can have the same value |
+| `choices` | `choice` | **required** for `choice`; the allowed values, each listed once; the editor shows them as a dropdown |
 | `min`, `max` | `int`, `float`, `date` | lowest and highest allowed value, both included |
-| `description` | all | shown when hovering over the column title in the editor |
+| `description` | all | text shown when hovering over the column title in the editor |
+
+`safedata` checks the schema file before using it, and lists every problem: a missing or unknown type, a misspelled setting, a setting used with the wrong type, `min` greater than `max`, a name used twice, and so on.
 
 | Type | Values | Written in the file as |
 |---|---|---|
