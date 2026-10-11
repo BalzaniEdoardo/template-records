@@ -1,7 +1,7 @@
 id,date,site,category,observer,value,verified,notes
 1,1996-02-09,West,survey,Omar Haddad,5.79,false,
 2,1996-03-13,North,incident,Yuki Sato,25.76,true,access road closed
-3,1996-04-18,South,survey,Maria Rossi,66.13,true,
+3,1996-04-18,North,survey,Maria Rossi,66.13,true,
 4,1996-05-12,North,incident,Yuki Sato,70.26,true,
 5,1996-05-24,South,incident,Ana Silva,50.3,true,this was fixed
 6,1996-07-01,South,sample,Maria Rossi,169.79,true,
