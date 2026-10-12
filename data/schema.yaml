@@ -6,10 +6,10 @@
 key: id
 
 # Groups of columns whose values, together, must differ between records: here,
-# one observation of each category per site and day. Records with an empty
-# value in a group are not checked. Use [] to allow duplicates.
+# at most one record per site and day. Records with an empty value in a group
+# are not checked. Use [] to allow duplicates.
 unique_entries:
-  - [date, site, category]
+  - [date, site]
 
 columns:
   - name: id
