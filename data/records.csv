@@ -20,4 +20,4 @@ id,date,site,category,observer,value,verified,notes
 19,1997-11-16,South,sample,Tom Becker,103.68,true,access road closed
 20,1997-12-18,South,maintenance,Luca Bianchi,,true,
 21,2020-02-22,North,survey,Edoardo Balzani,121.1,true,hello
-22,1998-01-20,South,sample,Amy Slipowitz,12,,
+22,1998-01-20,South,sample,Amy Slipowitz,10002,,
